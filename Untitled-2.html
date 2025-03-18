@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amigo Secreto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input, button {
+            margin: 5px;
+            padding: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        #resultado {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        button {
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #resultadoCaja {
+            margin-top: 20px;
+            font-size: 1.2em;
+            padding: 10px;
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            border: 2px solid #007bff;
+            background-color: #f0f8ff;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>🎁 Amigo Secreto</h2>
+
+    <label for="nombre">Ingresar un nombre:</label>
+    <input type="text" id="nombre" placeholder="Escribe un nombre">
+    <button onclick="agregarNombre()">Agregar Nombre</button>
+
+    <h3>Participantes:</h3>
+    <ul id="lista"></ul>
+
+    <button onclick="asignarAmigo()">Asignar Amigo</button>
+    <button onclick="reiniciarJuego()">Reiniciar Juego</button>
+
+    <h3>Resultado:</h3>
+    <div id="resultadoCaja"></div>
+
+    <script>
+        let participantes = [];
+        let amigosAsignados = [];
+
+        function agregarNombre() {
+            let nombre = document.getElementById("nombre").value.trim();
+            if (nombre && !participantes.includes(nombre)) {
+                participantes.push(nombre);
+
+                // Actualizar la lista de participantes
+                document.getElementById("lista").innerHTML = participantes.map(p => `<li>${p}</li>`).join("");
+
+                document.getElementById("nombre").value = ""; // Limpia el campo de entrada
+            }
+        }
+
+        function asignarAmigo() {
+            if (participantes.length < 2) {
+                alert("Se necesitan al menos 2 participantes.");
+                return;
+            }
+
+            // Buscar participantes que no hayan sido asignados
+            let disponibles = participantes.filter(p => !amigosAsignados.includes(p));
+
+            if (disponibles.length === 0) {
+                alert("Ya se han asignado todos los amigos secretos.");
+                return;
+            }
+
+            // Asignar un solo amigo secreto (solo se muestra el nombre del participante asignado)
+            let elegido = disponibles[Math.floor(Math.random() * disponibles.length)];
+
+            amigosAsignados.push(elegido);
+
+            // Mostrar solo el nombre del participante asignado en la caja
+            document.getElementById("resultadoCaja").innerText = `El amigo secreto asignado es: ${elegido}`;
+        }
+
+        function reiniciarJuego() {
+            participantes = [];
+            amigosAsignados = [];
+            document.getElementById("lista").innerHTML = "";
+            document.getElementById("resultadoCaja").innerText = "";
+            document.getElementById("nombre").value = "";
+        }
+    </script>
+
+</body>
+</html>
